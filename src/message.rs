@@ -1,5 +1,5 @@
 use crate::errors::AnalyticsError;
-use crate::ruddermessage::{
+use crate::rudder_message::{
     Alias as RudderAlias, Group as RudderGroup, Identify as RudderIdentify, Page as RudderPage, RudderMessage,
     Screen as RudderScreen, Track as RudderTrack,
 };

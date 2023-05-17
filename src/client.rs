@@ -1,6 +1,6 @@
 use crate::errors::AnalyticsError;
 use crate::message::MessageKind;
-use crate::ruddermessage::RudderMessage;
+use crate::rudder_message::RudderMessage;
 use std::time::Duration;
 
 pub struct RudderAnalytics {
