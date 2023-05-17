@@ -34,54 +34,55 @@ impl RudderAnalytics {
     /// # Panics
     #[allow(clippy::too_many_lines)]
     pub fn send(&self, message: &Message) -> Result<(), Error> {
-        let id_error_message = String::from("Either of user_id or anonymous_id is required");
-        let empty_message = String::new();
-        let mut error_message: String = String::new();
-
         // match the type of event and fetch the proper API path
         let path = match message {
             Message::Identify(identify_message) => {
                 // Checking for userId and anonymousId
                 if identify_message.user_id.is_none() && identify_message.anonymous_id.is_none() {
-                    error_message = id_error_message;
-                } else {
-                    error_message = empty_message;
+                    return Err(AnalyticsError::InvalidRequest(
+                        "Either of user_id or anonymous_id is required".to_owned(),
+                    )
+                    .into());
                 }
                 "/v1/identify"
             }
             Message::Track(track_message) => {
                 // Checking for userId and anonymousId
                 if track_message.user_id.is_none() && track_message.anonymous_id.is_none() {
-                    error_message = id_error_message;
-                } else {
-                    error_message = empty_message;
+                    return Err(AnalyticsError::InvalidRequest(
+                        "Either of user_id or anonymous_id is required".to_owned(),
+                    )
+                    .into());
                 }
                 "/v1/track"
             }
             Message::Page(page_message) => {
                 // Checking for userId and anonymousId
                 if page_message.user_id.is_none() && page_message.anonymous_id.is_none() {
-                    error_message = id_error_message;
-                } else {
-                    error_message = empty_message;
+                    return Err(AnalyticsError::InvalidRequest(
+                        "Either of user_id or anonymous_id is required".to_owned(),
+                    )
+                    .into());
                 }
                 "/v1/page"
             }
             Message::Screen(screen_message) => {
                 // Checking for userId and anonymousId
                 if screen_message.user_id.is_none() && screen_message.anonymous_id.is_none() {
-                    error_message = id_error_message;
-                } else {
-                    error_message = empty_message;
+                    return Err(AnalyticsError::InvalidRequest(
+                        "Either of user_id or anonymous_id is required".to_owned(),
+                    )
+                    .into());
                 }
                 "/v1/screen"
             }
             Message::Group(group_message) => {
                 // Checking for userId and anonymousId
                 if group_message.user_id.is_none() && group_message.anonymous_id.is_none() {
-                    error_message = id_error_message;
-                } else {
-                    error_message = empty_message;
+                    return Err(AnalyticsError::InvalidRequest(
+                        "Either of user_id or anonymous_id is required".to_owned(),
+                    )
+                    .into());
                 }
                 "/v1/group"
             }
@@ -89,36 +90,30 @@ impl RudderAnalytics {
             Message::Batch(_) => "/v1/batch",
         };
 
-        if error_message == String::new() {
-            // match the type of event and manipulate the payload to rudder format
-            let rudder_message = match message {
-                Message::Identify(identify_message) => utils::parse_identify(identify_message),
-                Message::Track(track_message) => utils::parse_track(track_message),
-                Message::Page(page_message) => utils::parse_page(page_message),
-                Message::Screen(screen_message) => utils::parse_screen(screen_message),
-                Message::Group(group_message) => utils::parse_group(group_message),
-                Message::Alias(alias_message) => utils::parse_alias(alias_message),
-                Message::Batch(batch_message) => utils::parse_batch(batch_message),
-            };
+        // match the type of event and manipulate the payload to rudder format
+        let rudder_message = match message {
+            Message::Identify(identify_message) => utils::parse_identify(identify_message),
+            Message::Track(track_message) => utils::parse_track(track_message),
+            Message::Page(page_message) => utils::parse_page(page_message),
+            Message::Screen(screen_message) => utils::parse_screen(screen_message),
+            Message::Group(group_message) => utils::parse_group(group_message),
+            Message::Alias(alias_message) => utils::parse_alias(alias_message),
+            Message::Batch(batch_message) => utils::parse_batch(batch_message),
+        };
 
-            // final payload
-            debug!("rudder_message: {:#?}", rudder_message);
+        // final payload
+        debug!("rudder_message: {:#?}", rudder_message);
 
-            let request = self
-                .client
-                .post(format!("{}{}", self.data_plane_url, path))
-                .basic_auth(self.write_key.to_string(), Some(""))
-                .json(&rudder_message);
+        let request = self
+            .client
+            .post(format!("{}{}", self.data_plane_url, path))
+            .basic_auth(self.write_key.to_string(), Some(""))
+            .json(&rudder_message);
 
-            std::thread::spawn(|| {
-                let _: Result<_, _> = request.send();
-            });
+        std::thread::spawn(|| {
+            let _: Result<_, _> = request.send();
+        });
 
-            Ok(())
-
-            // Send the payload to the data plane url
-        } else {
-            Err(AnalyticsError::InvalidRequest(error_message).into())
-        }
+        Ok(())
     }
 }
