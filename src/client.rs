@@ -1,6 +1,6 @@
 use crate::errors::AnalyticsError;
 use crate::message::MessageKind;
-use crate::utils;
+use crate::ruddermessage::RudderMessage;
 use std::time::Duration;
 
 // Rudderanalytics client
@@ -44,16 +44,7 @@ impl RudderAnalytics {
             MessageKind::Batch(_) => "/v1/batch",
         };
 
-        // match the type of event and manipulate the payload to rudder format
-        let rudder_message = match message {
-            MessageKind::Identify(identify_message) => utils::parse_identify(identify_message),
-            MessageKind::Track(track_message) => utils::parse_track(track_message),
-            MessageKind::Page(page_message) => utils::parse_page(page_message),
-            MessageKind::Screen(screen_message) => utils::parse_screen(screen_message),
-            MessageKind::Group(group_message) => utils::parse_group(group_message),
-            MessageKind::Alias(alias_message) => utils::parse_alias(alias_message),
-            MessageKind::Batch(batch_message) => utils::parse_batch(batch_message),
-        };
+        let rudder_message: RudderMessage = message.into();
 
         let request = self
             .client

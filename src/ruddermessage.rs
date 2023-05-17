@@ -5,7 +5,7 @@ use serde_json::Value;
 /// An enum containing all values which may be sent to `RudderStack`'s API.
 #[derive(PartialEq, Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum Ruddermessage {
+pub enum RudderMessage {
     Identify(Identify),
     Track(Track),
     Page(Page),
