@@ -35,7 +35,6 @@ impl RudderAnalytics {
     #[allow(clippy::too_many_lines)]
     pub fn send(&self, message: &Message) -> Result<(), Error> {
         let id_error_message = String::from("Either of user_id or anonymous_id is required");
-        let reserve_key_error_message = String::from("Reserve keyword present in context");
         let empty_message = String::new();
         let mut error_message: String = String::new();
 
@@ -47,12 +46,6 @@ impl RudderAnalytics {
                     error_message = id_error_message;
                 } else {
                     error_message = empty_message;
-                    // Checking conflicts with reserved keywords
-                    if identify_message.context.is_some()
-                        && utils::check_reserved_keywords_conflict(&identify_message.context.clone().unwrap())
-                    {
-                        error_message = reserve_key_error_message;
-                    }
                 }
                 "/v1/identify"
             }
@@ -62,12 +55,6 @@ impl RudderAnalytics {
                     error_message = id_error_message;
                 } else {
                     error_message = empty_message;
-                    // Checking conflicts with reserved keywords
-                    if track_message.context.is_some()
-                        && utils::check_reserved_keywords_conflict(&track_message.context.clone().unwrap())
-                    {
-                        error_message = reserve_key_error_message;
-                    }
                 }
                 "/v1/track"
             }
@@ -77,12 +64,6 @@ impl RudderAnalytics {
                     error_message = id_error_message;
                 } else {
                     error_message = empty_message;
-                    // Checking conflicts with reserved keywords
-                    if page_message.context.is_some()
-                        && utils::check_reserved_keywords_conflict(&page_message.context.clone().unwrap())
-                    {
-                        error_message = reserve_key_error_message;
-                    }
                 }
                 "/v1/page"
             }
@@ -92,12 +73,6 @@ impl RudderAnalytics {
                     error_message = id_error_message;
                 } else {
                     error_message = empty_message;
-                    // Checking conflicts with reserved keywords
-                    if screen_message.context.is_some()
-                        && utils::check_reserved_keywords_conflict(&screen_message.context.clone().unwrap())
-                    {
-                        error_message = reserve_key_error_message;
-                    }
                 }
                 "/v1/screen"
             }
@@ -107,33 +82,11 @@ impl RudderAnalytics {
                     error_message = id_error_message;
                 } else {
                     error_message = empty_message;
-                    // Checking conflicts with reserved keywords
-                    if group_message.context.is_some()
-                        && utils::check_reserved_keywords_conflict(&group_message.context.clone().unwrap())
-                    {
-                        error_message = reserve_key_error_message;
-                    }
                 }
                 "/v1/group"
             }
-            Message::Alias(alias_message) => {
-                // Checking conflicts with reserved keywords
-                if alias_message.context.is_some()
-                    && utils::check_reserved_keywords_conflict(&alias_message.context.clone().unwrap())
-                {
-                    error_message = reserve_key_error_message;
-                }
-                "/v1/alias"
-            }
-            Message::Batch(batch_message) => {
-                // Checking conflicts with reserved keywords
-                if batch_message.context.is_some()
-                    && utils::check_reserved_keywords_conflict(&batch_message.context.clone().unwrap())
-                {
-                    error_message = reserve_key_error_message;
-                }
-                "/v1/batch"
-            }
+            Message::Alias(_) => "/v1/alias",
+            Message::Batch(_) => "/v1/batch",
         };
 
         if error_message == String::new() {
