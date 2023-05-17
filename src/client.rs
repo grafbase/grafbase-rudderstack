@@ -1,7 +1,6 @@
 use crate::errors::AnalyticsError;
 use crate::message::Message;
 use crate::utils;
-use log::debug;
 use std::time::Duration;
 
 // Rudderanalytics client
