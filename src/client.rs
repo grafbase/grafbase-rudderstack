@@ -18,7 +18,7 @@ impl RudderAnalytics {
             write_key,
             data_plane_url,
             client: reqwest::blocking::Client::builder()
-                .connect_timeout(Duration::new(10, 0))
+                .connect_timeout(Duration::from_secs(10))
                 .build()
                 .expect("TLS must be supported"),
         }
