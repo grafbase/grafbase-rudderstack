@@ -1,5 +1,5 @@
 use crate::errors::AnalyticsError;
-use crate::message::Message;
+use crate::message::MessageKind;
 use crate::utils;
 use std::time::Duration;
 
@@ -30,29 +30,29 @@ impl RudderAnalytics {
     /// # Errors
     /// # Panics
     #[allow(clippy::too_many_lines)]
-    pub fn send(&self, message: &Message) -> Result<(), AnalyticsError> {
+    pub fn send(&self, message: &MessageKind) -> Result<(), AnalyticsError> {
         message.validate()?;
 
         // match the type of event and fetch the proper API path
         let path = match message {
-            Message::Identify(_) => "/v1/identify",
-            Message::Track(_) => "/v1/track",
-            Message::Page(_) => "/v1/page",
-            Message::Screen(_) => "/v1/screen",
-            Message::Group(_) => "/v1/group",
-            Message::Alias(_) => "/v1/alias",
-            Message::Batch(_) => "/v1/batch",
+            MessageKind::Identify(_) => "/v1/identify",
+            MessageKind::Track(_) => "/v1/track",
+            MessageKind::Page(_) => "/v1/page",
+            MessageKind::Screen(_) => "/v1/screen",
+            MessageKind::Group(_) => "/v1/group",
+            MessageKind::Alias(_) => "/v1/alias",
+            MessageKind::Batch(_) => "/v1/batch",
         };
 
         // match the type of event and manipulate the payload to rudder format
         let rudder_message = match message {
-            Message::Identify(identify_message) => utils::parse_identify(identify_message),
-            Message::Track(track_message) => utils::parse_track(track_message),
-            Message::Page(page_message) => utils::parse_page(page_message),
-            Message::Screen(screen_message) => utils::parse_screen(screen_message),
-            Message::Group(group_message) => utils::parse_group(group_message),
-            Message::Alias(alias_message) => utils::parse_alias(alias_message),
-            Message::Batch(batch_message) => utils::parse_batch(batch_message),
+            MessageKind::Identify(identify_message) => utils::parse_identify(identify_message),
+            MessageKind::Track(track_message) => utils::parse_track(track_message),
+            MessageKind::Page(page_message) => utils::parse_page(page_message),
+            MessageKind::Screen(screen_message) => utils::parse_screen(screen_message),
+            MessageKind::Group(group_message) => utils::parse_group(group_message),
+            MessageKind::Alias(alias_message) => utils::parse_alias(alias_message),
+            MessageKind::Batch(batch_message) => utils::parse_batch(batch_message),
         };
 
         let request = self

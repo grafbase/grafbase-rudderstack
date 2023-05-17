@@ -4,9 +4,10 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 /// An enum containing all values which may be sent to `RudderStack`'s API.
+#[allow(clippy::module_name_repetitions)]
 #[derive(PartialEq, Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum Message {
+pub enum MessageKind {
     Identify(Identify),
     Track(Track),
     Page(Page),
@@ -16,9 +17,16 @@ pub enum Message {
     Batch(Batch),
 }
 
-trait Validate {
+pub trait Message {
+    fn get_timings(&self) -> (DateTime<Utc>, DateTime<Utc>) {
+        let sent_at = Utc::now();
+        let original_timestamp = self.get_original_timestamp().unwrap_or(sent_at);
+        (sent_at, original_timestamp)
+    }
+    fn get_original_timestamp(&self) -> Option<DateTime<Utc>>;
     fn get_user_id(&self) -> Option<&str>;
     fn get_anonymous_id(&self) -> Option<&str>;
+    /// # Errors
     fn validate(&self) -> Result<(), AnalyticsError> {
         if self.get_user_id().is_some() || self.get_anonymous_id().is_some() {
             Ok(())
@@ -28,7 +36,11 @@ trait Validate {
     }
 }
 
-impl Validate for Identify {
+impl Message for Identify {
+    fn get_original_timestamp(&self) -> Option<DateTime<Utc>> {
+        self.original_timestamp
+    }
+
     fn get_user_id(&self) -> Option<&str> {
         self.user_id.as_deref()
     }
@@ -38,7 +50,11 @@ impl Validate for Identify {
     }
 }
 
-impl Validate for Track {
+impl Message for Track {
+    fn get_original_timestamp(&self) -> Option<DateTime<Utc>> {
+        self.original_timestamp
+    }
+
     fn get_user_id(&self) -> Option<&str> {
         self.user_id.as_deref()
     }
@@ -48,7 +64,11 @@ impl Validate for Track {
     }
 }
 
-impl Validate for Page {
+impl Message for Page {
+    fn get_original_timestamp(&self) -> Option<DateTime<Utc>> {
+        self.original_timestamp
+    }
+
     fn get_user_id(&self) -> Option<&str> {
         self.user_id.as_deref()
     }
@@ -58,7 +78,11 @@ impl Validate for Page {
     }
 }
 
-impl Validate for Screen {
+impl Message for Screen {
+    fn get_original_timestamp(&self) -> Option<DateTime<Utc>> {
+        self.original_timestamp
+    }
+
     fn get_user_id(&self) -> Option<&str> {
         self.user_id.as_deref()
     }
@@ -68,7 +92,11 @@ impl Validate for Screen {
     }
 }
 
-impl Validate for Group {
+impl Message for Group {
+    fn get_original_timestamp(&self) -> Option<DateTime<Utc>> {
+        self.original_timestamp
+    }
+
     fn get_anonymous_id(&self) -> Option<&str> {
         None
     }
@@ -80,7 +108,11 @@ impl Validate for Group {
     }
 }
 
-impl Validate for Alias {
+impl Message for Alias {
+    fn get_original_timestamp(&self) -> Option<DateTime<Utc>> {
+        self.original_timestamp
+    }
+
     fn get_anonymous_id(&self) -> Option<&str> {
         None
     }
@@ -92,7 +124,11 @@ impl Validate for Alias {
     }
 }
 
-impl Validate for Batch {
+impl Message for Batch {
+    fn get_original_timestamp(&self) -> Option<DateTime<Utc>> {
+        self.original_timestamp
+    }
+
     fn get_anonymous_id(&self) -> Option<&str> {
         None
     }
@@ -104,17 +140,17 @@ impl Validate for Batch {
     }
 }
 
-impl Message {
+impl MessageKind {
     /// # Errors
     pub fn validate(&self) -> Result<(), AnalyticsError> {
         match self {
-            Message::Identify(message) => message.validate(),
-            Message::Track(message) => message.validate(),
-            Message::Page(message) => message.validate(),
-            Message::Screen(message) => message.validate(),
-            Message::Group(message) => message.validate(),
-            Message::Alias(message) => message.validate(),
-            Message::Batch(message) => message.validate(),
+            MessageKind::Identify(message) => message.validate(),
+            MessageKind::Track(message) => message.validate(),
+            MessageKind::Page(message) => message.validate(),
+            MessageKind::Screen(message) => message.validate(),
+            MessageKind::Group(message) => message.validate(),
+            MessageKind::Alias(message) => message.validate(),
+            MessageKind::Batch(message) => message.validate(),
         }
     }
 }

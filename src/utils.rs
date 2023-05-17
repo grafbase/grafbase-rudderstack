@@ -1,28 +1,22 @@
-use crate::message::{Alias, Batch, BatchMessage, Group, Identify, Page, Screen, Track};
+use crate::message::{Alias, Batch, BatchMessage, Group, Identify, Message, Page, Screen, Track};
 use crate::ruddermessage::{
     Alias as Rudderalias, Batch as Rudderbatch, BatchMessage as Rudderbatchmessage, Group as Ruddergroup,
     Identify as Rudderidentify, Page as Rudderpage, Ruddermessage, Screen as Rudderscreen, Track as Ruddertrack,
 };
-use chrono::prelude::*;
 
 // constants and reserved keywords
 const CHANNEL: &str = "server";
 
 // modify identify payload to rudder format
 pub fn parse_identify(message: &Identify) -> Ruddermessage {
-    let sent_at = Utc::now();
-    let original_timestamp = if message.original_timestamp.is_none() {
-        Some(sent_at)
-    } else {
-        message.original_timestamp
-    };
+    let (sent_at, original_timestamp) = message.get_timings();
 
     Ruddermessage::Identify(Rudderidentify {
         user_id: message.user_id.clone(),
         anonymous_id: message.anonymous_id.clone(),
         traits: message.traits.clone(),
         original_timestamp,
-        sent_at: Some(sent_at),
+        sent_at,
         integrations: message.integrations.clone(),
         context: message.context.clone(),
         r#type: String::from("identify"),
@@ -32,12 +26,7 @@ pub fn parse_identify(message: &Identify) -> Ruddermessage {
 
 // modify track payload to rudder format
 pub fn parse_track(message: &Track) -> Ruddermessage {
-    let sent_at = Utc::now();
-    let original_timestamp = if message.original_timestamp.is_none() {
-        Some(sent_at)
-    } else {
-        message.original_timestamp
-    };
+    let (sent_at, original_timestamp) = message.get_timings();
 
     Ruddermessage::Track(Ruddertrack {
         user_id: message.user_id.clone(),
@@ -45,7 +34,7 @@ pub fn parse_track(message: &Track) -> Ruddermessage {
         event: message.event.clone(),
         properties: message.properties.clone(),
         original_timestamp,
-        sent_at: Some(sent_at),
+        sent_at,
         integrations: message.integrations.clone(),
         context: message.context.clone(),
         r#type: String::from("track"),
@@ -55,12 +44,7 @@ pub fn parse_track(message: &Track) -> Ruddermessage {
 
 // modify page payload to rudder format
 pub fn parse_page(message: &Page) -> Ruddermessage {
-    let sent_at = Utc::now();
-    let original_timestamp = if message.original_timestamp.is_none() {
-        Some(sent_at)
-    } else {
-        message.original_timestamp
-    };
+    let (sent_at, original_timestamp) = message.get_timings();
 
     Ruddermessage::Page(Rudderpage {
         user_id: message.user_id.clone(),
@@ -68,7 +52,7 @@ pub fn parse_page(message: &Page) -> Ruddermessage {
         name: message.name.clone(),
         properties: message.properties.clone(),
         original_timestamp,
-        sent_at: Some(sent_at),
+        sent_at,
         integrations: message.integrations.clone(),
         context: message.context.clone(),
         r#type: String::from("page"),
@@ -78,12 +62,7 @@ pub fn parse_page(message: &Page) -> Ruddermessage {
 
 // modify screen payload to rudder format
 pub fn parse_screen(message: &Screen) -> Ruddermessage {
-    let sent_at = Utc::now();
-    let original_timestamp = if message.original_timestamp.is_none() {
-        Some(sent_at)
-    } else {
-        message.original_timestamp
-    };
+    let (sent_at, original_timestamp) = message.get_timings();
 
     Ruddermessage::Screen(Rudderscreen {
         user_id: message.user_id.clone(),
@@ -91,7 +70,7 @@ pub fn parse_screen(message: &Screen) -> Ruddermessage {
         name: message.name.clone(),
         properties: message.properties.clone(),
         original_timestamp,
-        sent_at: Some(sent_at),
+        sent_at,
         integrations: message.integrations.clone(),
         context: message.context.clone(),
         r#type: String::from("screen"),
@@ -101,12 +80,7 @@ pub fn parse_screen(message: &Screen) -> Ruddermessage {
 
 // modify group payload to rudder format
 pub fn parse_group(message: &Group) -> Ruddermessage {
-    let sent_at = Utc::now();
-    let original_timestamp = if message.original_timestamp.is_none() {
-        Some(sent_at)
-    } else {
-        message.original_timestamp
-    };
+    let (sent_at, original_timestamp) = message.get_timings();
 
     Ruddermessage::Group(Ruddergroup {
         user_id: message.user_id.clone(),
@@ -114,7 +88,7 @@ pub fn parse_group(message: &Group) -> Ruddermessage {
         group_id: message.group_id.clone(),
         traits: message.traits.clone(),
         original_timestamp,
-        sent_at: Some(sent_at),
+        sent_at,
         integrations: message.integrations.clone(),
         context: message.context.clone(),
         r#type: String::from("group"),
@@ -124,19 +98,14 @@ pub fn parse_group(message: &Group) -> Ruddermessage {
 
 // modify alias payload to rudder format
 pub fn parse_alias(message: &Alias) -> Ruddermessage {
-    let sent_at = Utc::now();
-    let original_timestamp = if message.original_timestamp.is_none() {
-        Some(sent_at)
-    } else {
-        message.original_timestamp
-    };
+    let (sent_at, original_timestamp) = message.get_timings();
 
     Ruddermessage::Alias(Rudderalias {
         user_id: message.user_id.clone(),
         previous_id: message.previous_id.clone(),
         traits: message.traits.clone(),
         original_timestamp,
-        sent_at: Some(sent_at),
+        sent_at,
         integrations: message.integrations.clone(),
         context: message.context.clone(),
         r#type: String::from("alias"),
@@ -147,12 +116,7 @@ pub fn parse_alias(message: &Alias) -> Ruddermessage {
 #[allow(clippy::too_many_lines)]
 // modify batch payload to rudder format
 pub fn parse_batch(batch: &Batch) -> Ruddermessage {
-    let sent_at = Utc::now();
-    let original_timestamp = if batch.original_timestamp.is_none() {
-        Some(sent_at)
-    } else {
-        batch.original_timestamp
-    };
+    let (sent_at, original_timestamp) = batch.get_timings();
 
     let integrations = batch.integrations.clone();
     let context = batch.context.clone();
@@ -166,7 +130,7 @@ pub fn parse_batch(batch: &Batch) -> Ruddermessage {
                 anonymous_id: identify_message.anonymous_id.clone(),
                 traits: identify_message.traits.clone(),
                 original_timestamp,
-                sent_at: Some(sent_at),
+                sent_at,
                 integrations: identify_message.integrations.clone(),
                 context: context.clone(),
                 r#type: String::from("identify"),
@@ -178,7 +142,7 @@ pub fn parse_batch(batch: &Batch) -> Ruddermessage {
                 event: track_message.event.clone(),
                 properties: track_message.properties.clone(),
                 original_timestamp,
-                sent_at: Some(sent_at),
+                sent_at,
                 integrations: track_message.integrations.clone(),
                 context: context.clone(),
                 r#type: String::from("track"),
@@ -190,7 +154,7 @@ pub fn parse_batch(batch: &Batch) -> Ruddermessage {
                 name: page_message.name.clone(),
                 properties: page_message.properties.clone(),
                 original_timestamp,
-                sent_at: Some(sent_at),
+                sent_at,
                 integrations: page_message.integrations.clone(),
                 context: context.clone(),
                 r#type: String::from("page"),
@@ -202,7 +166,7 @@ pub fn parse_batch(batch: &Batch) -> Ruddermessage {
                 name: screen_message.name.clone(),
                 properties: screen_message.properties.clone(),
                 original_timestamp,
-                sent_at: Some(sent_at),
+                sent_at,
                 integrations: screen_message.integrations.clone(),
                 context: context.clone(),
                 r#type: String::from("screen"),
@@ -214,7 +178,7 @@ pub fn parse_batch(batch: &Batch) -> Ruddermessage {
                 group_id: group_message.group_id.clone(),
                 traits: group_message.traits.clone(),
                 original_timestamp,
-                sent_at: Some(sent_at),
+                sent_at,
                 integrations: group_message.integrations.clone(),
                 context: context.clone(),
                 r#type: String::from("group"),
@@ -225,7 +189,7 @@ pub fn parse_batch(batch: &Batch) -> Ruddermessage {
                 previous_id: alias_message.previous_id.clone(),
                 traits: alias_message.traits.clone(),
                 original_timestamp,
-                sent_at: Some(sent_at),
+                sent_at,
                 integrations: alias_message.integrations.clone(),
                 context: context.clone(),
                 r#type: String::from("alias"),
@@ -240,6 +204,6 @@ pub fn parse_batch(batch: &Batch) -> Ruddermessage {
         context,
         r#type: String::from("batch"),
         original_timestamp,
-        sent_at: Some(sent_at),
+        sent_at,
     })
 }

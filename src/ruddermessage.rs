@@ -32,11 +32,11 @@ pub struct Identify {
 
     /// The originalTimestamp associated with this message.
     #[serde(rename = "originalTimestamp")]
-    pub original_timestamp: Option<DateTime<Utc>>,
+    pub original_timestamp: DateTime<Utc>,
 
     /// sent at timestamp
     #[serde(rename = "sentAt")]
-    pub sent_at: Option<DateTime<Utc>>,
+    pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -73,11 +73,11 @@ pub struct Track {
 
     /// The originalTimestamp associated with this message.
     #[serde(rename = "originalTimestamp")]
-    pub original_timestamp: Option<DateTime<Utc>>,
+    pub original_timestamp: DateTime<Utc>,
 
     /// sent at timestamp
     #[serde(rename = "sentAt")]
-    pub sent_at: Option<DateTime<Utc>>,
+    pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -114,11 +114,11 @@ pub struct Page {
 
     /// The originalTimestamp associated with this message.
     #[serde(rename = "originalTimestamp")]
-    pub original_timestamp: Option<DateTime<Utc>>,
+    pub original_timestamp: DateTime<Utc>,
 
     /// sent at timestamp
     #[serde(rename = "sentAt")]
-    pub sent_at: Option<DateTime<Utc>>,
+    pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -155,11 +155,11 @@ pub struct Screen {
 
     /// The originalTimestamp associated with this message.
     #[serde(rename = "originalTimestamp")]
-    pub original_timestamp: Option<DateTime<Utc>>,
+    pub original_timestamp: DateTime<Utc>,
 
     /// sent at timestamp
     #[serde(rename = "sentAt")]
-    pub sent_at: Option<DateTime<Utc>>,
+    pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -197,11 +197,11 @@ pub struct Group {
 
     /// The originalTimestamp associated with this message.
     #[serde(rename = "originalTimestamp")]
-    pub original_timestamp: Option<DateTime<Utc>>,
+    pub original_timestamp: DateTime<Utc>,
 
     /// sent at timestamp
     #[serde(rename = "sentAt")]
-    pub sent_at: Option<DateTime<Utc>>,
+    pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -235,11 +235,11 @@ pub struct Alias {
 
     /// The originalTimestamp associated with this message.
     #[serde(rename = "originalTimestamp")]
-    pub original_timestamp: Option<DateTime<Utc>>,
+    pub original_timestamp: DateTime<Utc>,
 
     /// sent at timestamp
     #[serde(rename = "sentAt")]
-    pub sent_at: Option<DateTime<Utc>>,
+    pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -272,11 +272,11 @@ pub struct Batch {
 
     /// The originalTimestamp associated with this message.
     #[serde(rename = "originalTimestamp")]
-    pub original_timestamp: Option<DateTime<Utc>>,
+    pub original_timestamp: DateTime<Utc>,
 
     /// sent at timestamp
     #[serde(rename = "sentAt")]
-    pub sent_at: Option<DateTime<Utc>>,
+    pub sent_at: DateTime<Utc>,
 
     // Type of method
     pub r#type: String,
