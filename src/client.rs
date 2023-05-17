@@ -40,7 +40,6 @@ impl RudderAnalytics {
             MessageKind::Screen(_) => "/v1/screen",
             MessageKind::Group(_) => "/v1/group",
             MessageKind::Alias(_) => "/v1/alias",
-            MessageKind::Batch(_) => "/v1/batch",
         };
 
         let rudder_message: RudderMessage = message.into();

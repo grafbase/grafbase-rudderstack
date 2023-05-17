@@ -12,7 +12,6 @@ pub enum RudderMessage {
     Screen(Screen),
     Group(Group),
     Alias(Alias),
-    Batch(Batch),
 }
 
 /// An identify event.
@@ -254,48 +253,4 @@ pub struct Alias {
 
     /// channel in payload
     pub channel: String,
-}
-
-/// A batch of events.
-#[derive(PartialEq, Debug, Clone, Serialize, Deserialize, Default)]
-pub struct Batch {
-    /// The batch of messages to send.
-    pub batch: Vec<BatchMessage>,
-
-    /// Context associated with this message.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub context: Option<Value>,
-
-    /// Integrations to route this message to.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub integrations: Option<Value>,
-
-    /// The originalTimestamp associated with this message.
-    #[serde(rename = "originalTimestamp")]
-    pub original_timestamp: DateTime<Utc>,
-
-    /// sent at timestamp
-    #[serde(rename = "sentAt")]
-    pub sent_at: DateTime<Utc>,
-
-    // Type of method
-    pub r#type: String,
-}
-
-/// An enum containing all messages which may be placed inside a batch.
-#[derive(PartialEq, Debug, Clone, Serialize, Deserialize)]
-#[serde(tag = "type")]
-pub enum BatchMessage {
-    #[serde(rename = "identify")]
-    Identify(Identify),
-    #[serde(rename = "track")]
-    Track(Track),
-    #[serde(rename = "page")]
-    Page(Page),
-    #[serde(rename = "screen")]
-    Screen(Screen),
-    #[serde(rename = "group")]
-    Group(Group),
-    #[serde(rename = "alias")]
-    Alias(Alias),
 }
