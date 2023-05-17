@@ -1,7 +1,6 @@
-use crate::errors::Error as AnalyticsError;
+use crate::errors::AnalyticsError;
 use crate::message::Message;
 use crate::utils;
-use failure::Error;
 use log::debug;
 use std::time::Duration;
 
@@ -33,56 +32,41 @@ impl RudderAnalytics {
     /// # Errors
     /// # Panics
     #[allow(clippy::too_many_lines)]
-    pub fn send(&self, message: &Message) -> Result<(), Error> {
+    pub fn send(&self, message: &Message) -> Result<(), AnalyticsError> {
         // match the type of event and fetch the proper API path
         let path = match message {
             Message::Identify(identify_message) => {
                 // Checking for userId and anonymousId
                 if identify_message.user_id.is_none() && identify_message.anonymous_id.is_none() {
-                    return Err(AnalyticsError::InvalidRequest(
-                        "Either of user_id or anonymous_id is required".to_owned(),
-                    )
-                    .into());
+                    return Err(AnalyticsError::InvalidRequest);
                 }
                 "/v1/identify"
             }
             Message::Track(track_message) => {
                 // Checking for userId and anonymousId
                 if track_message.user_id.is_none() && track_message.anonymous_id.is_none() {
-                    return Err(AnalyticsError::InvalidRequest(
-                        "Either of user_id or anonymous_id is required".to_owned(),
-                    )
-                    .into());
+                    return Err(AnalyticsError::InvalidRequest);
                 }
                 "/v1/track"
             }
             Message::Page(page_message) => {
                 // Checking for userId and anonymousId
                 if page_message.user_id.is_none() && page_message.anonymous_id.is_none() {
-                    return Err(AnalyticsError::InvalidRequest(
-                        "Either of user_id or anonymous_id is required".to_owned(),
-                    )
-                    .into());
+                    return Err(AnalyticsError::InvalidRequest);
                 }
                 "/v1/page"
             }
             Message::Screen(screen_message) => {
                 // Checking for userId and anonymousId
                 if screen_message.user_id.is_none() && screen_message.anonymous_id.is_none() {
-                    return Err(AnalyticsError::InvalidRequest(
-                        "Either of user_id or anonymous_id is required".to_owned(),
-                    )
-                    .into());
+                    return Err(AnalyticsError::InvalidRequest);
                 }
                 "/v1/screen"
             }
             Message::Group(group_message) => {
                 // Checking for userId and anonymousId
                 if group_message.user_id.is_none() && group_message.anonymous_id.is_none() {
-                    return Err(AnalyticsError::InvalidRequest(
-                        "Either of user_id or anonymous_id is required".to_owned(),
-                    )
-                    .into());
+                    return Err(AnalyticsError::InvalidRequest);
                 }
                 "/v1/group"
             }

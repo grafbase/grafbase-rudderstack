@@ -85,10 +85,7 @@ impl Batcher {
     pub fn push(&mut self, message: BatchMessage) -> Result<Option<BatchMessage>, Error> {
         let size = serde_json::to_vec(&message)?.len();
         if size > MAX_MESSAGE_SIZE {
-            return Err(AnalyticsError::MessageTooLarge(String::from(
-                "status code: 400, message: Message too large",
-            ))
-            .into());
+            return Err(AnalyticsError::MessageTooLarge.into());
         }
 
         self.byte_count += size + 1; // +1 to account for Serialized data's extra commas

@@ -1,15 +1,14 @@
 //! Errors which may arise from this crate.
-
-use failure::Fail;
+use thiserror::Error;
 
 /// An enum of errors this crate may produce. These are compatible with
 /// `failure` errors.
-#[derive(Debug, Fail)]
-pub enum Error {
+#[derive(Debug, Error)]
+pub enum AnalyticsError {
     /// The given message is too large to be sent to RudderStack's API.
-    #[fail(display = "message too large")]
-    MessageTooLarge(String),
+    #[error("message too large")]
+    MessageTooLarge,
 
-    #[fail(display = "Invalid request")]
-    InvalidRequest(String),
+    #[error("either user_id or anonymous_id are required")]
+    InvalidRequest,
 }
