@@ -7,7 +7,6 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-// constants and reserved keywords
 const CHANNEL: &str = "server";
 
 /// An enum containing all values which may be sent to `RudderStack`'s API.

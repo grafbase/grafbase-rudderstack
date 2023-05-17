@@ -3,7 +3,6 @@ use crate::message::MessageKind;
 use crate::ruddermessage::RudderMessage;
 use std::time::Duration;
 
-// Rudderanalytics client
 pub struct RudderAnalytics {
     pub write_key: String,
     pub data_plane_url: String,
@@ -11,7 +10,6 @@ pub struct RudderAnalytics {
 }
 
 impl RudderAnalytics {
-    // Function to initialize the Rudderanalytics client with write-key and data-plane-url
     #[must_use]
     pub fn load(write_key: String, data_plane_url: String) -> RudderAnalytics {
         RudderAnalytics {
@@ -24,14 +22,10 @@ impl RudderAnalytics {
         }
     }
 
-    // Function that will receive user event data
-    // and after validation
-    // modify it to Ruddermessage format and send the event to data plane url
     /// # Errors
     pub fn send(&self, message: &MessageKind) -> Result<(), AnalyticsError> {
         message.validate()?;
 
-        // match the type of event and fetch the proper API path
         let path = match message {
             MessageKind::Identify(_) => "/v1/identify",
             MessageKind::Track(_) => "/v1/track",
