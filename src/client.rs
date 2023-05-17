@@ -26,9 +26,9 @@ impl RudderAnalytics {
     pub fn send(&self, message: &MessageKind) -> Result<(), AnalyticsError> {
         message.validate()?;
 
-        let path = message.get_path();
-
         let rudder_message: RudderMessage = message.into();
+
+        let path = message.get_path();
 
         let request = self
             .client
