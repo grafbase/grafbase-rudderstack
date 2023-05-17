@@ -57,9 +57,6 @@ impl RudderAnalytics {
             Message::Batch(batch_message) => utils::parse_batch(batch_message),
         };
 
-        // final payload
-        debug!("rudder_message: {:#?}", rudder_message);
-
         let request = self
             .client
             .post(format!("{}{}", self.data_plane_url, path))
