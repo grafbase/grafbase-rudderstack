@@ -26,14 +26,7 @@ impl RudderAnalytics {
     pub fn send(&self, message: &MessageKind) -> Result<(), AnalyticsError> {
         message.validate()?;
 
-        let path = match message {
-            MessageKind::Identify(_) => "/v1/identify",
-            MessageKind::Track(_) => "/v1/track",
-            MessageKind::Page(_) => "/v1/page",
-            MessageKind::Screen(_) => "/v1/screen",
-            MessageKind::Group(_) => "/v1/group",
-            MessageKind::Alias(_) => "/v1/alias",
-        };
+        let path = message.get_path();
 
         let rudder_message: RudderMessage = message.into();
 
