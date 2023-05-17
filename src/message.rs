@@ -2,6 +2,8 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
+use crate::errors::AnalyticsError;
+
 /// An enum containing all values which may be sent to `RudderStack`'s API.
 #[derive(PartialEq, Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -13,6 +15,29 @@ pub enum Message {
     Group(Group),
     Alias(Alias),
     Batch(Batch),
+}
+
+impl Message {
+    /// # Errors
+    pub fn validate(&self) -> Result<(), AnalyticsError> {
+        let valid = match self {
+            Message::Identify(identify_message) => {
+                identify_message.user_id.is_some() || identify_message.anonymous_id.is_some()
+            }
+            Message::Track(track_message) => track_message.user_id.is_some() || track_message.anonymous_id.is_some(),
+            Message::Page(page_message) => page_message.user_id.is_some() || page_message.anonymous_id.is_some(),
+            Message::Screen(screen_message) => {
+                screen_message.user_id.is_some() || screen_message.anonymous_id.is_some()
+            }
+            Message::Group(group_message) => group_message.user_id.is_some() || group_message.anonymous_id.is_some(),
+            Message::Alias(_) | Message::Batch(_) => true,
+        };
+        if valid {
+            Ok(())
+        } else {
+            Err(AnalyticsError::InvalidRequest)
+        }
+    }
 }
 
 /// An identify event.
