@@ -28,7 +28,6 @@ impl RudderAnalytics {
     // and after validation
     // modify it to Ruddermessage format and send the event to data plane url
     /// # Errors
-    #[allow(clippy::too_many_lines)]
     pub fn send(&self, message: &MessageKind) -> Result<(), AnalyticsError> {
         message.validate()?;
 
