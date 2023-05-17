@@ -148,68 +148,64 @@ impl From<&MessageKind> for RudderMessage {
     fn from(message: &MessageKind) -> Self {
         match message {
             MessageKind::Identify(identify_message) => {
-                let message = &identify_message;
-                let (sent_at, original_timestamp) = message.get_timings();
+                let (sent_at, original_timestamp) = identify_message.get_timings();
 
                 RudderMessage::Identify(Rudderidentify {
-                    user_id: message.user_id.clone(),
-                    anonymous_id: message.anonymous_id.clone(),
-                    traits: message.traits.clone(),
+                    user_id: identify_message.user_id.clone(),
+                    anonymous_id: identify_message.anonymous_id.clone(),
+                    traits: identify_message.traits.clone(),
                     original_timestamp,
                     sent_at,
-                    integrations: message.integrations.clone(),
-                    context: message.context.clone(),
+                    integrations: identify_message.integrations.clone(),
+                    context: identify_message.context.clone(),
                     r#type: String::from("identify"),
                     channel: CHANNEL.to_string(),
                 })
             }
             MessageKind::Track(track_message) => {
-                let message = &track_message;
-                let (sent_at, original_timestamp) = message.get_timings();
+                let (sent_at, original_timestamp) = track_message.get_timings();
 
                 RudderMessage::Track(Ruddertrack {
-                    user_id: message.user_id.clone(),
-                    anonymous_id: message.anonymous_id.clone(),
-                    event: message.event.clone(),
-                    properties: message.properties.clone(),
+                    user_id: track_message.user_id.clone(),
+                    anonymous_id: track_message.anonymous_id.clone(),
+                    event: track_message.event.clone(),
+                    properties: track_message.properties.clone(),
                     original_timestamp,
                     sent_at,
-                    integrations: message.integrations.clone(),
-                    context: message.context.clone(),
+                    integrations: track_message.integrations.clone(),
+                    context: track_message.context.clone(),
                     r#type: String::from("track"),
                     channel: CHANNEL.to_string(),
                 })
             }
             MessageKind::Page(page_message) => {
-                let message = &page_message;
-                let (sent_at, original_timestamp) = message.get_timings();
+                let (sent_at, original_timestamp) = page_message.get_timings();
 
                 RudderMessage::Page(Rudderpage {
-                    user_id: message.user_id.clone(),
-                    anonymous_id: message.anonymous_id.clone(),
-                    name: message.name.clone(),
-                    properties: message.properties.clone(),
+                    user_id: page_message.user_id.clone(),
+                    anonymous_id: page_message.anonymous_id.clone(),
+                    name: page_message.name.clone(),
+                    properties: page_message.properties.clone(),
                     original_timestamp,
                     sent_at,
-                    integrations: message.integrations.clone(),
-                    context: message.context.clone(),
+                    integrations: page_message.integrations.clone(),
+                    context: page_message.context.clone(),
                     r#type: String::from("page"),
                     channel: CHANNEL.to_string(),
                 })
             }
             MessageKind::Screen(screen_message) => {
-                let message = &screen_message;
-                let (sent_at, original_timestamp) = message.get_timings();
+                let (sent_at, original_timestamp) = screen_message.get_timings();
 
                 RudderMessage::Screen(Rudderscreen {
-                    user_id: message.user_id.clone(),
-                    anonymous_id: message.anonymous_id.clone(),
-                    name: message.name.clone(),
-                    properties: message.properties.clone(),
+                    user_id: screen_message.user_id.clone(),
+                    anonymous_id: screen_message.anonymous_id.clone(),
+                    name: screen_message.name.clone(),
+                    properties: screen_message.properties.clone(),
                     original_timestamp,
                     sent_at,
-                    integrations: message.integrations.clone(),
-                    context: message.context.clone(),
+                    integrations: screen_message.integrations.clone(),
+                    context: screen_message.context.clone(),
                     r#type: String::from("screen"),
                     channel: CHANNEL.to_string(),
                 })
