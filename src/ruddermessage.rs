@@ -1,6 +1,6 @@
 use chrono::{DateTime, Utc};
+use ijson::IValue;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 
 /// An enum containing all values which may be sent to `RudderStack`'s API.
 #[derive(PartialEq, Debug, Clone, Serialize, Deserialize)]
@@ -26,7 +26,7 @@ pub struct Identify {
     pub anonymous_id: Option<String>,
 
     /// The traits to assign to the user.
-    pub traits: Option<Value>,
+    pub traits: Option<IValue>,
 
     /// The originalTimestamp associated with this message.
     pub original_timestamp: DateTime<Utc>,
@@ -35,10 +35,10 @@ pub struct Identify {
     pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
-    pub context: Option<Value>,
+    pub context: Option<IValue>,
 
     /// Integrations to route this message to.
-    pub integrations: Option<Value>,
+    pub integrations: Option<IValue>,
 
     /// Type of method
     pub r#type: String,
@@ -62,7 +62,7 @@ pub struct Track {
     pub event: String,
 
     /// The properties associated with the event.
-    pub properties: Option<Value>,
+    pub properties: Option<IValue>,
 
     /// The originalTimestamp associated with this message.
     pub original_timestamp: DateTime<Utc>,
@@ -71,10 +71,10 @@ pub struct Track {
     pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
-    pub context: Option<Value>,
+    pub context: Option<IValue>,
 
     /// Integrations to route this message to.
-    pub integrations: Option<Value>,
+    pub integrations: Option<IValue>,
 
     // Type of method
     pub r#type: String,
@@ -98,7 +98,7 @@ pub struct Page {
     pub name: String,
 
     /// The properties associated with the event.
-    pub properties: Option<Value>,
+    pub properties: Option<IValue>,
 
     /// The originalTimestamp associated with this message.
     pub original_timestamp: DateTime<Utc>,
@@ -107,10 +107,10 @@ pub struct Page {
     pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
-    pub context: Option<Value>,
+    pub context: Option<IValue>,
 
     /// Integrations to route this message to.
-    pub integrations: Option<Value>,
+    pub integrations: Option<IValue>,
 
     // Type of method
     pub r#type: String,
@@ -134,7 +134,7 @@ pub struct Screen {
     pub name: String,
 
     /// The properties associated with the event.
-    pub properties: Option<Value>,
+    pub properties: Option<IValue>,
 
     /// The originalTimestamp associated with this message.
     pub original_timestamp: DateTime<Utc>,
@@ -143,10 +143,10 @@ pub struct Screen {
     pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
-    pub context: Option<Value>,
+    pub context: Option<IValue>,
 
     /// Integrations to route this message to.
-    pub integrations: Option<Value>,
+    pub integrations: Option<IValue>,
 
     // Type of method
     pub r#type: String,
@@ -170,7 +170,7 @@ pub struct Group {
     pub group_id: String,
 
     /// The traits to assign to the group.
-    pub traits: Option<Value>,
+    pub traits: Option<IValue>,
 
     /// The originalTimestamp associated with this message.
     pub original_timestamp: DateTime<Utc>,
@@ -179,10 +179,10 @@ pub struct Group {
     pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
-    pub context: Option<Value>,
+    pub context: Option<IValue>,
 
     /// Integrations to route this message to.
-    pub integrations: Option<Value>,
+    pub integrations: Option<IValue>,
 
     // Type of method
     pub r#type: String,
@@ -203,7 +203,7 @@ pub struct Alias {
     pub previous_id: String,
 
     /// The traits to assign to the alias.
-    pub traits: Option<Value>,
+    pub traits: Option<IValue>,
 
     /// The originalTimestamp associated with this message.
     pub original_timestamp: DateTime<Utc>,
@@ -212,10 +212,10 @@ pub struct Alias {
     pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
-    pub context: Option<Value>,
+    pub context: Option<IValue>,
 
     /// Integrations to route this message to.
-    pub integrations: Option<Value>,
+    pub integrations: Option<IValue>,
 
     // Type of method
     pub r#type: String,

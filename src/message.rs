@@ -4,7 +4,7 @@ use crate::ruddermessage::{
     Screen as RudderScreen, Track as RudderTrack,
 };
 use chrono::{DateTime, Utc};
-use serde_json::Value;
+use ijson::IValue;
 
 const CHANNEL: &str = "server";
 
@@ -264,16 +264,16 @@ pub struct Identify {
     pub anonymous_id: Option<String>,
 
     /// The traits to assign to the user.
-    pub traits: Option<Value>,
+    pub traits: Option<IValue>,
 
     /// The timestamp associated with this message.
     pub original_timestamp: Option<DateTime<Utc>>,
 
     /// Context associated with this message.
-    pub context: Option<Value>,
+    pub context: Option<IValue>,
 
     /// Integrations to route this message to.
-    pub integrations: Option<Value>,
+    pub integrations: Option<IValue>,
 }
 
 /// A track event.
@@ -289,16 +289,16 @@ pub struct Track {
     pub event: String,
 
     /// The properties associated with the event.
-    pub properties: Option<Value>,
+    pub properties: Option<IValue>,
 
     /// The timestamp associated with this message.
     pub original_timestamp: Option<DateTime<Utc>>,
 
     /// Context associated with this message.
-    pub context: Option<Value>,
+    pub context: Option<IValue>,
 
     /// Integrations to route this message to.
-    pub integrations: Option<Value>,
+    pub integrations: Option<IValue>,
 }
 
 /// A page event.
@@ -314,16 +314,16 @@ pub struct Page {
     pub name: String,
 
     /// The properties associated with the event.
-    pub properties: Option<Value>,
+    pub properties: Option<IValue>,
 
     /// The timestamp associated with this message.
     pub original_timestamp: Option<DateTime<Utc>>,
 
     /// Context associated with this message.
-    pub context: Option<Value>,
+    pub context: Option<IValue>,
 
     /// Integrations to route this message to.
-    pub integrations: Option<Value>,
+    pub integrations: Option<IValue>,
 }
 
 /// A screen event.
@@ -339,16 +339,16 @@ pub struct Screen {
     pub name: String,
 
     /// The properties associated with the event.
-    pub properties: Option<Value>,
+    pub properties: Option<IValue>,
 
     /// The timestamp associated with this message.
     pub original_timestamp: Option<DateTime<Utc>>,
 
     /// Context associated with this message.
-    pub context: Option<Value>,
+    pub context: Option<IValue>,
 
     /// Integrations to route this message to.
-    pub integrations: Option<Value>,
+    pub integrations: Option<IValue>,
 }
 
 /// A group event.
@@ -364,16 +364,16 @@ pub struct Group {
     pub group_id: String,
 
     /// The traits to assign to the group.
-    pub traits: Option<Value>,
+    pub traits: Option<IValue>,
 
     /// The timestamp associated with this message.
     pub original_timestamp: Option<DateTime<Utc>>,
 
     /// Context associated with this message.
-    pub context: Option<Value>,
+    pub context: Option<IValue>,
 
     /// Integrations to route this message to.
-    pub integrations: Option<Value>,
+    pub integrations: Option<IValue>,
 }
 
 /// An alias event.
@@ -386,14 +386,14 @@ pub struct Alias {
     pub previous_id: String,
 
     /// The traits to assign to the alias.
-    pub traits: Option<Value>,
+    pub traits: Option<IValue>,
 
     /// The timestamp associated with this message.
     pub original_timestamp: Option<DateTime<Utc>>,
 
     /// Context associated with this message.
-    pub context: Option<Value>,
+    pub context: Option<IValue>,
 
     /// Integrations to route this message to.
-    pub integrations: Option<Value>,
+    pub integrations: Option<IValue>,
 }
