@@ -16,33 +16,28 @@ pub enum RudderMessage {
 
 /// An identify event.
 #[derive(PartialEq, Debug, Clone, Serialize, Deserialize, Default)]
+#[serde(rename_all = "camelCase")]
+#[serde_with::skip_serializing_none]
 pub struct Identify {
     /// The user id associated with this message.
-    #[serde(rename = "userId", skip_serializing_if = "Option::is_none")]
     pub user_id: Option<String>,
 
     /// The anonymous user id associated with this message.
-    #[serde(rename = "anonymousId", skip_serializing_if = "Option::is_none")]
     pub anonymous_id: Option<String>,
 
     /// The traits to assign to the user.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub traits: Option<Value>,
 
     /// The originalTimestamp associated with this message.
-    #[serde(rename = "originalTimestamp")]
     pub original_timestamp: DateTime<Utc>,
 
     /// sent at timestamp
-    #[serde(rename = "sentAt")]
     pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub context: Option<Value>,
 
     /// Integrations to route this message to.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub integrations: Option<Value>,
 
     /// Type of method
@@ -54,36 +49,31 @@ pub struct Identify {
 
 /// A track event.
 #[derive(PartialEq, Debug, Clone, Serialize, Deserialize, Default)]
+#[serde(rename_all = "camelCase")]
+#[serde_with::skip_serializing_none]
 pub struct Track {
     /// The user id associated with this message.
-    #[serde(rename = "userId", skip_serializing_if = "Option::is_none")]
     pub user_id: Option<String>,
 
     /// The anonymous user id associated with this message.
-    #[serde(rename = "anonymousId", skip_serializing_if = "Option::is_none")]
     pub anonymous_id: Option<String>,
 
     /// The name of the event being tracked.
     pub event: String,
 
     /// The properties associated with the event.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub properties: Option<Value>,
 
     /// The originalTimestamp associated with this message.
-    #[serde(rename = "originalTimestamp")]
     pub original_timestamp: DateTime<Utc>,
 
     /// sent at timestamp
-    #[serde(rename = "sentAt")]
     pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub context: Option<Value>,
 
     /// Integrations to route this message to.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub integrations: Option<Value>,
 
     // Type of method
@@ -95,36 +85,31 @@ pub struct Track {
 
 /// A page event.
 #[derive(PartialEq, Debug, Clone, Serialize, Deserialize, Default)]
+#[serde(rename_all = "camelCase")]
+#[serde_with::skip_serializing_none]
 pub struct Page {
     /// The user id associated with this message.
-    #[serde(rename = "userId", skip_serializing_if = "Option::is_none")]
     pub user_id: Option<String>,
 
     /// The anonymous user id associated with this message.
-    #[serde(rename = "anonymousId", skip_serializing_if = "Option::is_none")]
     pub anonymous_id: Option<String>,
 
     /// The name of the page being tracked.
     pub name: String,
 
     /// The properties associated with the event.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub properties: Option<Value>,
 
     /// The originalTimestamp associated with this message.
-    #[serde(rename = "originalTimestamp")]
     pub original_timestamp: DateTime<Utc>,
 
     /// sent at timestamp
-    #[serde(rename = "sentAt")]
     pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub context: Option<Value>,
 
     /// Integrations to route this message to.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub integrations: Option<Value>,
 
     // Type of method
@@ -136,36 +121,31 @@ pub struct Page {
 
 /// A screen event.
 #[derive(PartialEq, Debug, Clone, Serialize, Deserialize, Default)]
+#[serde(rename_all = "camelCase")]
+#[serde_with::skip_serializing_none]
 pub struct Screen {
     /// The user id associated with this message.
-    #[serde(rename = "userId", skip_serializing_if = "Option::is_none")]
     pub user_id: Option<String>,
 
     /// The anonymous user id associated with this message.
-    #[serde(rename = "anonymousId", skip_serializing_if = "Option::is_none")]
     pub anonymous_id: Option<String>,
 
     /// The name of the screen being tracked.
     pub name: String,
 
     /// The properties associated with the event.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub properties: Option<Value>,
 
     /// The originalTimestamp associated with this message.
-    #[serde(rename = "originalTimestamp")]
     pub original_timestamp: DateTime<Utc>,
 
     /// sent at timestamp
-    #[serde(rename = "sentAt")]
     pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub context: Option<Value>,
 
     /// Integrations to route this message to.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub integrations: Option<Value>,
 
     // Type of method
@@ -177,37 +157,31 @@ pub struct Screen {
 
 /// A group event.
 #[derive(PartialEq, Debug, Clone, Serialize, Deserialize, Default)]
+#[serde(rename_all = "camelCase")]
+#[serde_with::skip_serializing_none]
 pub struct Group {
     /// The user id associated with this message.
-    #[serde(rename = "userId", skip_serializing_if = "Option::is_none")]
     pub user_id: Option<String>,
 
     /// The anonymous user id associated with this message.
-    #[serde(rename = "anonymousId", skip_serializing_if = "Option::is_none")]
     pub anonymous_id: Option<String>,
 
     /// The group the user is being associated with.
-    #[serde(rename = "groupId")]
     pub group_id: String,
 
     /// The traits to assign to the group.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub traits: Option<Value>,
 
     /// The originalTimestamp associated with this message.
-    #[serde(rename = "originalTimestamp")]
     pub original_timestamp: DateTime<Utc>,
 
     /// sent at timestamp
-    #[serde(rename = "sentAt")]
     pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub context: Option<Value>,
 
     /// Integrations to route this message to.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub integrations: Option<Value>,
 
     // Type of method
@@ -219,33 +193,28 @@ pub struct Group {
 
 /// An alias event.
 #[derive(PartialEq, Debug, Clone, Serialize, Deserialize, Default)]
+#[serde(rename_all = "camelCase")]
+#[serde_with::skip_serializing_none]
 pub struct Alias {
     /// The user id associated with this message.
-    #[serde(rename = "userId")]
     pub user_id: String,
 
     /// The user's previous ID.
-    #[serde(rename = "previousId")]
     pub previous_id: String,
 
     /// The traits to assign to the alias.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub traits: Option<Value>,
 
     /// The originalTimestamp associated with this message.
-    #[serde(rename = "originalTimestamp")]
     pub original_timestamp: DateTime<Utc>,
 
     /// sent at timestamp
-    #[serde(rename = "sentAt")]
     pub sent_at: DateTime<Utc>,
 
     /// Context associated with this message.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub context: Option<Value>,
 
     /// Integrations to route this message to.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub integrations: Option<Value>,
 
     // Type of method
