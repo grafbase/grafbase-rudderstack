@@ -1,8 +1,7 @@
+use crate::errors::AnalyticsError;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-
-use crate::errors::AnalyticsError;
 
 /// An enum containing all values which may be sent to `RudderStack`'s API.
 #[derive(PartialEq, Debug, Clone, Serialize, Deserialize)]
@@ -17,25 +16,105 @@ pub enum Message {
     Batch(Batch),
 }
 
-impl Message {
-    /// # Errors
-    pub fn validate(&self) -> Result<(), AnalyticsError> {
-        let valid = match self {
-            Message::Identify(identify_message) => {
-                identify_message.user_id.is_some() || identify_message.anonymous_id.is_some()
-            }
-            Message::Track(track_message) => track_message.user_id.is_some() || track_message.anonymous_id.is_some(),
-            Message::Page(page_message) => page_message.user_id.is_some() || page_message.anonymous_id.is_some(),
-            Message::Screen(screen_message) => {
-                screen_message.user_id.is_some() || screen_message.anonymous_id.is_some()
-            }
-            Message::Group(group_message) => group_message.user_id.is_some() || group_message.anonymous_id.is_some(),
-            Message::Alias(_) | Message::Batch(_) => true,
-        };
-        if valid {
+trait Validate {
+    fn get_user_id(&self) -> Option<&str>;
+    fn get_anonymous_id(&self) -> Option<&str>;
+    fn validate(&self) -> Result<(), AnalyticsError> {
+        if self.get_user_id().is_some() || self.get_anonymous_id().is_some() {
             Ok(())
         } else {
             Err(AnalyticsError::InvalidRequest)
+        }
+    }
+}
+
+impl Validate for Identify {
+    fn get_user_id(&self) -> Option<&str> {
+        self.user_id.as_deref()
+    }
+
+    fn get_anonymous_id(&self) -> Option<&str> {
+        self.anonymous_id.as_deref()
+    }
+}
+
+impl Validate for Track {
+    fn get_user_id(&self) -> Option<&str> {
+        self.user_id.as_deref()
+    }
+
+    fn get_anonymous_id(&self) -> Option<&str> {
+        self.anonymous_id.as_deref()
+    }
+}
+
+impl Validate for Page {
+    fn get_user_id(&self) -> Option<&str> {
+        self.user_id.as_deref()
+    }
+
+    fn get_anonymous_id(&self) -> Option<&str> {
+        self.anonymous_id.as_deref()
+    }
+}
+
+impl Validate for Screen {
+    fn get_user_id(&self) -> Option<&str> {
+        self.user_id.as_deref()
+    }
+
+    fn get_anonymous_id(&self) -> Option<&str> {
+        self.anonymous_id.as_deref()
+    }
+}
+
+impl Validate for Group {
+    fn get_anonymous_id(&self) -> Option<&str> {
+        None
+    }
+    fn get_user_id(&self) -> Option<&str> {
+        None
+    }
+    fn validate(&self) -> Result<(), AnalyticsError> {
+        Ok(())
+    }
+}
+
+impl Validate for Alias {
+    fn get_anonymous_id(&self) -> Option<&str> {
+        None
+    }
+    fn get_user_id(&self) -> Option<&str> {
+        None
+    }
+    fn validate(&self) -> Result<(), AnalyticsError> {
+        Ok(())
+    }
+}
+
+impl Validate for Batch {
+    fn get_anonymous_id(&self) -> Option<&str> {
+        None
+    }
+    fn get_user_id(&self) -> Option<&str> {
+        None
+    }
+    fn validate(&self) -> Result<(), AnalyticsError> {
+        Ok(())
+    }
+}
+
+impl Message {
+    /// # Errors
+    pub fn validate(&self) -> Result<(), AnalyticsError> {
+        match self {
+            Message::Identify(message) => message.validate(),
+            Message::Track(message) => message.validate(),
+            Message::Page(message) => message.validate(),
+            Message::Screen(message) => message.validate(),
+            Message::Group(message) => message.validate(),
+            Message::Alias(message) => message.validate(),
+            Message::Batch(message) => message.validate(),
         }
     }
 }

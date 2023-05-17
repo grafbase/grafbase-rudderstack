@@ -11,7 +11,6 @@ pub struct RudderAnalytics {
 }
 
 impl RudderAnalytics {
-    /// # Panics
     // Function to initialize the Rudderanalytics client with write-key and data-plane-url
     #[must_use]
     pub fn load(write_key: String, data_plane_url: String) -> RudderAnalytics {
@@ -21,7 +20,7 @@ impl RudderAnalytics {
             client: reqwest::blocking::Client::builder()
                 .connect_timeout(Duration::new(10, 0))
                 .build()
-                .unwrap(),
+                .expect("TLS must be supported"),
         }
     }
 
@@ -58,7 +57,7 @@ impl RudderAnalytics {
 
         let request = self
             .client
-            .post(format!("{}{}", self.data_plane_url, path))
+            .post(format!("{}{path}", self.data_plane_url))
             .basic_auth(self.write_key.to_string(), Some(""))
             .json(&rudder_message);
 
