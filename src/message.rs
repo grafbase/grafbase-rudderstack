@@ -1,7 +1,7 @@
 use crate::errors::AnalyticsError;
 use crate::ruddermessage::{
-    Alias as Rudderalias, Group as Ruddergroup, Identify as Rudderidentify, Page as Rudderpage, RudderMessage,
-    Screen as Rudderscreen, Track as Ruddertrack,
+    Alias as RudderAlias, Group as RudderGroup, Identify as RudderIdentify, Page as RudderPage, RudderMessage,
+    Screen as RudderScreen, Track as RudderTrack,
 };
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -150,7 +150,7 @@ impl From<&MessageKind> for RudderMessage {
             MessageKind::Identify(identify_message) => {
                 let (sent_at, original_timestamp) = identify_message.get_timings();
 
-                RudderMessage::Identify(Rudderidentify {
+                RudderMessage::Identify(RudderIdentify {
                     user_id: identify_message.user_id.clone(),
                     anonymous_id: identify_message.anonymous_id.clone(),
                     traits: identify_message.traits.clone(),
@@ -165,7 +165,7 @@ impl From<&MessageKind> for RudderMessage {
             MessageKind::Track(track_message) => {
                 let (sent_at, original_timestamp) = track_message.get_timings();
 
-                RudderMessage::Track(Ruddertrack {
+                RudderMessage::Track(RudderTrack {
                     user_id: track_message.user_id.clone(),
                     anonymous_id: track_message.anonymous_id.clone(),
                     event: track_message.event.clone(),
@@ -181,7 +181,7 @@ impl From<&MessageKind> for RudderMessage {
             MessageKind::Page(page_message) => {
                 let (sent_at, original_timestamp) = page_message.get_timings();
 
-                RudderMessage::Page(Rudderpage {
+                RudderMessage::Page(RudderPage {
                     user_id: page_message.user_id.clone(),
                     anonymous_id: page_message.anonymous_id.clone(),
                     name: page_message.name.clone(),
@@ -197,7 +197,7 @@ impl From<&MessageKind> for RudderMessage {
             MessageKind::Screen(screen_message) => {
                 let (sent_at, original_timestamp) = screen_message.get_timings();
 
-                RudderMessage::Screen(Rudderscreen {
+                RudderMessage::Screen(RudderScreen {
                     user_id: screen_message.user_id.clone(),
                     anonymous_id: screen_message.anonymous_id.clone(),
                     name: screen_message.name.clone(),
@@ -213,7 +213,7 @@ impl From<&MessageKind> for RudderMessage {
             MessageKind::Group(group_message) => {
                 let (sent_at, original_timestamp) = group_message.get_timings();
 
-                RudderMessage::Group(Ruddergroup {
+                RudderMessage::Group(RudderGroup {
                     user_id: group_message.user_id.clone(),
                     anonymous_id: group_message.anonymous_id.clone(),
                     group_id: group_message.group_id.clone(),
@@ -229,7 +229,7 @@ impl From<&MessageKind> for RudderMessage {
             MessageKind::Alias(alias_message) => {
                 let (sent_at, original_timestamp) = alias_message.get_timings();
 
-                RudderMessage::Alias(Rudderalias {
+                RudderMessage::Alias(RudderAlias {
                     user_id: alias_message.user_id.clone(),
                     previous_id: alias_message.previous_id.clone(),
                     traits: alias_message.traits.clone(),
